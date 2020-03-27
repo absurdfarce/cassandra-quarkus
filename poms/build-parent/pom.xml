@@ -16,11 +16,6 @@
     <name>Cassandra Quarkus :: Build Parent</name>
     <description>Maven plugins configuration</description>
 
-    <properties>
-        <!-- maven-surefire-plugin -->
-        <failIfNoTests>false</failIfNoTests>
-    </properties>
-
     <dependencyManagement>
         <dependencies>
             <!-- Import BOM -->
