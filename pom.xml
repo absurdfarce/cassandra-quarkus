@@ -29,6 +29,7 @@
         <maven.compiler.testSource>${maven.compiler.source}</maven.compiler.testSource>
 
         <maven-surefire-plugin.version>3.0.0-M4</maven-surefire-plugin.version>
+        <format-plugin.version>2.9</format-plugin.version>
     </properties>
 
     <modules>
@@ -80,6 +81,19 @@
                     <groupId>io.quarkus</groupId>
                     <artifactId>quarkus-maven-plugin</artifactId>
                     <version>${quarkus.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>com.coveo</groupId>
+                    <artifactId>fmt-maven-plugin</artifactId>
+                    <version>${format-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                            <phase>process-sources</phase>
+                        </execution>
+                    </executions>
                 </plugin>
 
             </plugins>
