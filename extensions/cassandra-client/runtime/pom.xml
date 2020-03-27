@@ -16,8 +16,8 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>io.debezium.quarkus</groupId>
-                <artifactId>debezium-quarkus-bom</artifactId>
+                <groupId>com.datastax.oss.quarkus</groupId>
+                <artifactId>cassandra-quarkus-bom</artifactId>
                 <version>${project.version}</version>
                 <type>pom</type>
                 <scope>import</scope>

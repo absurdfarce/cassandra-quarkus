@@ -30,12 +30,7 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-core-deployment</artifactId>
        </dependency>
-       <dependency>
-        <groupId>io.quarkus</groupId>
-        <artifactId>cassandra-quarkus-client</artifactId>
-        <version>${project.version}</version>
-       </dependency>
-       <dependency>
+        <dependency>
         <groupId>com.datastax.oss</groupId>
         <artifactId>java-driver-core</artifactId>
        </dependency>

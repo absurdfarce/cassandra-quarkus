@@ -41,7 +41,7 @@
             <!-- Cassandra Quarkus deployment modules -->
             <dependency>
                 <groupId>com.datastax.oss.quarkus</groupId>
-                <artifactId>quarkus-cassandra-client-deployment</artifactId>
+                <artifactId>cassandra-quarkus-client-deployment</artifactId>
                 <version>${cassandra-quarkus.version}</version>
             </dependency>
 
