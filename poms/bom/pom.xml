@@ -73,6 +73,16 @@
                 </exclusions>
             </dependency>
             <dependency>
+                <groupId>com.datastax.oss</groupId>
+                <artifactId>java-driver-mapper-runtime</artifactId>
+                <version>${datastax-java-driver.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.datastax.oss</groupId>
+                <artifactId>java-driver-mapper-processor</artifactId>
+                <version>${datastax-java-driver.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.lz4</groupId>
                 <artifactId>lz4-java</artifactId>
                 <version>${lz4.version}</version>

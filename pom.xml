@@ -30,6 +30,7 @@
 
         <maven-surefire-plugin.version>3.0.0-M4</maven-surefire-plugin.version>
         <format-plugin.version>2.9</format-plugin.version>
+        <graalvmHome>${env.GRAALVM_HOME}</graalvmHome>
     </properties>
 
     <modules>

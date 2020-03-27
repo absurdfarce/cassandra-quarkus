@@ -4,9 +4,41 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.datastax.oss.quarkus</groupId>
-    <artifactId>integration-tests</artifactId>
+    <parent>
+        <groupId>com.datastax.oss.quarkus</groupId>
+        <artifactId>cassandra-quarkus-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>cassandra-quarkus-integration-tests</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
-    
+    <packaging>pom</packaging>
+
+    <name>Cassandra Quarkus :: Integration Tests</name>
+
+    <modules>
+        <module>cassandra-client</module>
+    </modules>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.quarkus</groupId>
+                <artifactId>quarkus-maven-plugin</artifactId>
+                <inherited>false</inherited>
+                <configuration>
+                    <artifactIdPrefix>cassandra-quarkus-</artifactIdPrefix>
+                    <namePrefix xml:space="preserve">Cassandra Quarkus :: </namePrefix>
+                    <nameSegmentDelimiter xml:space="preserve"> :: </nameSegmentDelimiter>
+                    <javaPackageInfix>component</javaPackageInfix>
+                    <templatesUriBase>file:///${project.basedir}/../build/create-extension-templates</templatesUriBase>
+                    <runtimeBomPath>../poms/bom/pom.xml</runtimeBomPath>
+                    <deploymentBomPath>../poms/bom-deployment/pom.xml</deploymentBomPath>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
 </project>
