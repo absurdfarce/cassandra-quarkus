@@ -65,12 +65,6 @@ class CassandraClientProcessor {
             new ReflectiveClassBuildItem(true, true, AtomicTimestampGenerator.class.getName()));
   }
 
-  @BuildStep
-  List<JniRuntimeAccessBuildItem> registerForJni(){
-    return Arrays.asList(
-            new JniRuntimeAccessBuildItem(true, true,true, Native.class.getName())
-    );
-  }
 
 
   @SuppressWarnings("unchecked")
