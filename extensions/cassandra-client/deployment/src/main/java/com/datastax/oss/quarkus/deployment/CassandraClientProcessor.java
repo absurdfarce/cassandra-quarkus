@@ -45,7 +45,6 @@ import io.quarkus.smallrye.health.deployment.spi.HealthBuildItem;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Default;
 import javax.enterprise.inject.Produces;
-//import jnr.ffi.provider.jffi.AsmClassLoader;
 
 class CassandraClientProcessor {
   public static final String CASSANDRA_CLIENT = "cassandra-client";
