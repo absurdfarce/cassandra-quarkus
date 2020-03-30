@@ -165,9 +165,8 @@ class CassandraClientProcessor {
     return new RuntimeInitializedClassBuildItem(MetadataManager.class.getCanonicalName());
   }
 
-  // todo make it work and include reference.conf
   @BuildStep
   NativeImageResourceBuildItem referenceConf() {
-    return new NativeImageResourceBuildItem("/reference.conf");
+    return new NativeImageResourceBuildItem("reference.conf");
   }
 }

@@ -160,7 +160,7 @@
                 <configuration>
                   <cleanupServer>true</cleanupServer>
                   <enableHttpUrlHandler>true</enableHttpUrlHandler>
-                  <additionalBuildArgs>-H:IncludeResources=.*reference\.conf,-H:+TraceClassInitialization</additionalBuildArgs>
+                  <additionalBuildArgs>-H:+TraceClassInitialization</additionalBuildArgs>
                   <graalvmHome>${graalvmHome}</graalvmHome>
                 </configuration>
               </execution>
