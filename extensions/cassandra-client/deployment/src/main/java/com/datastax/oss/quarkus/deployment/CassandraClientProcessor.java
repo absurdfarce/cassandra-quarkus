@@ -1,10 +1,24 @@
 package com.datastax.oss.quarkus.deployment;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static io.quarkus.deployment.annotations.ExecutionTime.RUNTIME_INIT;
 import static io.quarkus.deployment.annotations.ExecutionTime.STATIC_INIT;
 
 import com.datastax.oss.driver.api.core.CqlSession;
+import com.datastax.oss.driver.internal.core.addresstranslation.PassThroughAddressTranslator;
+import com.datastax.oss.driver.internal.core.connection.ExponentialReconnectionPolicy;
+import com.datastax.oss.driver.internal.core.loadbalancing.DefaultLoadBalancingPolicy;
 import com.datastax.oss.driver.internal.core.metadata.MetadataManager;
+import com.datastax.oss.driver.internal.core.metadata.NoopNodeStateListener;
+import com.datastax.oss.driver.internal.core.metadata.schema.NoopSchemaChangeListener;
+import com.datastax.oss.driver.internal.core.os.Native;
+import com.datastax.oss.driver.internal.core.retry.DefaultRetryPolicy;
+import com.datastax.oss.driver.internal.core.session.throttling.PassThroughRequestThrottler;
+import com.datastax.oss.driver.internal.core.specex.NoSpeculativeExecutionPolicy;
+import com.datastax.oss.driver.internal.core.time.AtomicTimestampGenerator;
+import com.datastax.oss.driver.internal.core.tracker.NoopRequestTracker;
 import com.datastax.oss.quarkus.config.CassandraClientConfig;
 import com.datastax.oss.quarkus.runtime.AbstractCassandraClientProducer;
 import com.datastax.oss.quarkus.runtime.CassandraClientRecorder;
@@ -17,7 +31,9 @@ import io.quarkus.deployment.annotations.BuildStep;
 import io.quarkus.deployment.annotations.Record;
 import io.quarkus.deployment.builditem.ConfigurationBuildItem;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
+import io.quarkus.deployment.builditem.nativeimage.JniRuntimeAccessBuildItem;
 import io.quarkus.deployment.builditem.nativeimage.NativeImageResourceBuildItem;
+import io.quarkus.deployment.builditem.nativeimage.ReflectiveClassBuildItem;
 import io.quarkus.deployment.builditem.nativeimage.RuntimeInitializedClassBuildItem;
 import io.quarkus.deployment.recording.RecorderContext;
 import io.quarkus.gizmo.ClassCreator;
@@ -29,9 +45,34 @@ import io.quarkus.smallrye.health.deployment.spi.HealthBuildItem;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Default;
 import javax.enterprise.inject.Produces;
+//import jnr.ffi.provider.jffi.AsmClassLoader;
 
 class CassandraClientProcessor {
   public static final String CASSANDRA_CLIENT = "cassandra-client";
+
+
+  @BuildStep
+  List<ReflectiveClassBuildItem> registerForReflection() {
+    return Arrays.asList(
+            new ReflectiveClassBuildItem(true, true, ExponentialReconnectionPolicy.class.getName()),
+            new ReflectiveClassBuildItem(true, true, NoopSchemaChangeListener.class.getName()),
+            new ReflectiveClassBuildItem(true, true, PassThroughAddressTranslator.class.getName()),
+            new ReflectiveClassBuildItem(true, true, DefaultLoadBalancingPolicy.class.getName()),
+            new ReflectiveClassBuildItem(true, true, DefaultRetryPolicy.class.getName()),
+            new ReflectiveClassBuildItem(true, true, NoSpeculativeExecutionPolicy.class.getName()),
+            new ReflectiveClassBuildItem(true, true, NoopNodeStateListener.class.getName()),
+            new ReflectiveClassBuildItem(true, true, NoopRequestTracker.class.getName()),
+            new ReflectiveClassBuildItem(true, true, PassThroughRequestThrottler.class.getName()),
+            new ReflectiveClassBuildItem(true, true, AtomicTimestampGenerator.class.getName()));
+  }
+
+  @BuildStep
+  List<JniRuntimeAccessBuildItem> registerForJni(){
+    return Arrays.asList(
+            new JniRuntimeAccessBuildItem(true, true,true, Native.class.getName())
+    );
+  }
+
 
   @SuppressWarnings("unchecked")
   @Record(STATIC_INIT)
