@@ -3,32 +3,187 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.datastax.oss.quarkus</groupId>
-    <artifactId>cassandra-quarkus-parent</artifactId>
+    <artifactId>cassandra-quarkus-build-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
+    <relativePath>../poms/build-parent/pom.xml</relativePath>
   </parent>
-  <artifactId>cassandra-quarkus-integration-tests</artifactId>
+  <artifactId>integraion-tests</artifactId>
   <version>1.0.0-SNAPSHOT</version>
-  <packaging>pom</packaging>
-  <name>Cassandra Quarkus :: Integration Tests</name>
-  <modules>
-    <module>cassandra-client</module>
-  </modules>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.datastax.oss.quarkus</groupId>
+        <artifactId>cassandra-quarkus-bom-deployment</artifactId>
+        <version>${project.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-resteasy</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.datastax.oss.quarkus</groupId>
+      <artifactId>cassandra-quarkus-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.datastax.oss</groupId>
+      <artifactId>java-driver-mapper-runtime</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.datastax.oss</groupId>
+      <artifactId>java-driver-mapper-processor</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.lz4</groupId>
+      <artifactId>lz4-java</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.xerial.snappy</groupId>
+      <artifactId>snappy-java</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-test-common</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>cassandra</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>javax.xml.bind</groupId>
+          <artifactId>jaxb-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>javax.annotation</groupId>
+          <artifactId>javax.annotation-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.github.jnr</groupId>
+          <artifactId>jnr-posix</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.github.jnr</groupId>
+          <artifactId>jnr-ffi</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>io.dropwizard.metrics</groupId>
+          <artifactId>metrics-core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-junit5</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!-- Health check -->
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-smallrye-health</artifactId>
+    </dependency>
+  </dependencies>
   <build>
+    <resources>
+      <resource>
+        <directory>src/test/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
     <plugins>
+      <plugin>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>io.quarkus</groupId>
         <artifactId>quarkus-maven-plugin</artifactId>
-        <inherited>false</inherited>
-        <configuration>
-          <artifactIdPrefix>cassandra-quarkus-</artifactIdPrefix>
-          <namePrefix xml:space="preserve">Cassandra Quarkus :: </namePrefix>
-          <nameSegmentDelimiter xml:space="preserve"> :: </nameSegmentDelimiter>
-          <javaPackageInfix>component</javaPackageInfix>
-          <templatesUriBase>file:///${project.basedir}/../build/create-extension-templates</templatesUriBase>
-          <runtimeBomPath>../poms/bom/pom.xml</runtimeBomPath>
-          <deploymentBomPath>../poms/bom-deployment/pom.xml</deploymentBomPath>
-        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>build</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>native-image</id>
+      <activation>
+        <property>
+          <name>native</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>integration-test</goal>
+                  <goal>verify</goal>
+                </goals>
+                <configuration>
+                  <systemProperties>
+                    <native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>
+                  </systemProperties>
+                </configuration>
+              </execution>
+            </executions>
+            <configuration>
+              <skip>false</skip>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>native-image</id>
+                <goals>
+                  <goal>native-image</goal>
+                </goals>
+                <configuration>
+                  <cleanupServer>true</cleanupServer>
+                  <enableHttpUrlHandler>true</enableHttpUrlHandler>
+                  <additionalBuildArgs>-H:+TraceClassInitialization</additionalBuildArgs>
+                  <graalvmHome>${graalvmHome}</graalvmHome>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <source>1.8</source>
+              <!-- (or higher) -->
+              <target>1.8</target>
+              <!-- (or higher) -->
+              <annotationProcessorPaths>
+                <path>
+                  <groupId>com.datastax.oss</groupId>
+                  <artifactId>java-driver-mapper-processor</artifactId>
+                  <version>4.5.0</version>
+                </path>
+              </annotationProcessorPaths>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
