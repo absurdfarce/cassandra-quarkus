@@ -5,7 +5,7 @@
     <groupId>com.datastax.oss.quarkus</groupId>
     <artifactId>cassandra-quarkus-build-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <relativePath>../../poms/build-parent/pom.xml</relativePath>
+    <relativePath>../poms/build-parent/pom.xml</relativePath>
   </parent>
   <artifactId>cassandra-quarkus-client-parent</artifactId>
   <name>Cassandra Quarkus :: Client</name>

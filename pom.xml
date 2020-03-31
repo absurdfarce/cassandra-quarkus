@@ -29,7 +29,7 @@
     <module>poms/bom</module>
     <module>poms/bom-deployment</module>
     <module>poms/build-parent</module>
-    <module>extensions</module>
+    <module>cassandra-quarkus-extension</module>
     <module>integration-tests</module>
   </modules>
   <build>
