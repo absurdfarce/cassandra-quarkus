@@ -44,7 +44,6 @@ public abstract class AbstractCassandraClientProducer {
         () -> {
           ConfigFactory.invalidateCaches();
           return ConfigFactory.defaultOverrides()
-              // todo do we need to load both conf and json?
               .withFallback(ConfigFactory.parseResources("application.conf"))
               .withFallback(ConfigFactory.parseResources("application.json"))
               .withFallback(ConfigFactory.defaultReference())
@@ -75,7 +74,7 @@ public abstract class AbstractCassandraClientProducer {
       CassandraClientConnectionConfig config) {
     configLoaderBuilder.withStringList(DefaultDriverOption.CONTACT_POINTS, config.contactPoints);
     configLoaderBuilder.withString(
-        DefaultDriverOption.LOAD_BALANCING_LOCAL_DATACENTER, config.localDataCenter);
+        DefaultDriverOption.LOAD_BALANCING_LOCAL_DATACENTER, config.localDatacenter);
     config.requestTimeout.ifPresent(
         v -> configLoaderBuilder.withDuration(DefaultDriverOption.REQUEST_TIMEOUT, v));
     // force java clock because jnr does not work with quarkus

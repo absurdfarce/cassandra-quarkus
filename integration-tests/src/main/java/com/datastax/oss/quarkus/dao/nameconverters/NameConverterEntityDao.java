@@ -21,9 +21,9 @@ import com.datastax.oss.driver.api.mapper.annotations.Select;
 
 @Dao
 public interface NameConverterEntityDao {
-    @Select
-    NameConverterEntity findById(int id);
+  @Select
+  NameConverterEntity findById(int id);
 
-    @Insert
-    void save(NameConverterEntity entity);
+  @Insert
+  void save(NameConverterEntity entity);
 }

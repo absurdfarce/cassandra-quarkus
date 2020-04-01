@@ -71,7 +71,7 @@ public class CassandraHealthCheck implements HealthCheck {
 
   private Map<String, String> extractInfoFromResult(Row result) {
     HashMap<String, String> details = new HashMap<>();
-    details.put("dataCenter", result.getString("data_center"));
+    details.put("datacenter", result.getString("data_center"));
     details.put("releaseVersion", result.getString("release_version"));
     details.put("clusterName", result.getString("cluster_name"));
     details.put("cqlVersion", result.getString("cql_version"));

@@ -22,6 +22,6 @@ import com.datastax.oss.driver.api.mapper.annotations.Mapper;
 
 @Mapper
 public interface TestMapper {
-    @DaoFactory
-    NameConverterEntityDao nameConverterEntityDao(@DaoKeyspace CqlIdentifier keyspace);
+  @DaoFactory
+  NameConverterEntityDao nameConverterEntityDao(@DaoKeyspace CqlIdentifier keyspace);
 }

@@ -23,7 +23,7 @@ import io.quarkus.runtime.annotations.ConfigRoot;
 public class CassandraClientConfig {
   public static final String CONFIG_NAME = "cassandra";
 
-  /** The cassandra client config. */
+  /** The Apache Cassandra (R) client config. */
   @ConfigItem(name = ConfigItem.PARENT)
   public CassandraClientConnectionConfig cassandraClientConnectionConfig;
 

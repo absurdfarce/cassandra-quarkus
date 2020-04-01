@@ -38,8 +38,7 @@ public class CassandraClientRecorder {
     producer.setCassandraClientConfig(config);
   }
 
-  @SuppressWarnings("rawtypes")
-  private AnnotationLiteral defaultName() {
+  private AnnotationLiteral<Default> defaultName() {
     return Default.Literal.INSTANCE;
   }
 

@@ -23,21 +23,19 @@ import com.datastax.oss.driver.api.mapper.annotations.PartitionKey;
 @NamingStrategy(customConverterClass = TestNameConverter.class)
 public class NameConverterEntity {
 
-    @PartitionKey
-    private int entityId;
+  @PartitionKey private int entityId;
 
-    public NameConverterEntity() {
-    }
+  public NameConverterEntity() {}
 
-    public NameConverterEntity(int entityId) {
-        this.entityId = entityId;
-    }
+  public NameConverterEntity(int entityId) {
+    this.entityId = entityId;
+  }
 
-    public int getEntityId() {
-        return entityId;
-    }
+  public int getEntityId() {
+    return entityId;
+  }
 
-    public void setEntityId(int entityId) {
-        this.entityId = entityId;
-    }
+  public void setEntityId(int entityId) {
+    this.entityId = entityId;
+  }
 }

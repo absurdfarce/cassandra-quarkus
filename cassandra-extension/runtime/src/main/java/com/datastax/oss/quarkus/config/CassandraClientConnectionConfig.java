@@ -24,15 +24,17 @@ import java.util.Optional;
 
 @ConfigGroup
 public class CassandraClientConnectionConfig {
+
   /**
-   * Contact-points used to connect to Cassandra. If not specified, it will connect to local-host.
+   * Contact-points used to connect to Apache Cassandra (R). If not specified, it will connect to
+   * localhost.
    */
   @ConfigItem(name = "contact-points", defaultValue = "127.0.0.1:9042")
   public List<String> contactPoints;
 
-  /** Local data-center used when creating a {@link CqlSession} */
+  /** Local datacenter used when creating a {@link CqlSession}. */
   @ConfigItem(name = "load-balancing-policy.local-datacenter")
-  public String localDataCenter;
+  public String localDatacenter;
 
   /** How long the driver waits for a request to complete. */
   @ConfigItem(name = "request.timeout")

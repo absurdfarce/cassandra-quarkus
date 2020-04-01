@@ -54,7 +54,7 @@ public class CassandraHealthCheckTest {
 
     // then
     HashMap<String, Object> expected = new HashMap<>();
-    expected.put("dataCenter", dc);
+    expected.put("datacenter", dc);
     expected.put("releaseVersion", releaseVersion);
     expected.put("clusterName", clusterName);
     expected.put("cqlVersion", cqlVersion);

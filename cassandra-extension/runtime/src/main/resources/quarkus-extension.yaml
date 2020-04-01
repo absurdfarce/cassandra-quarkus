@@ -1,5 +1,5 @@
 ---
-name: "DataStax Cassandra client"
+name: "DataStax Apache Cassandra client"
 metadata:
   keywords:
     - "cassandra"

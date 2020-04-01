@@ -15,9 +15,6 @@
  */
 package com.datastax.oss.quarkus.deployment;
 
-import java.util.Arrays;
-import java.util.List;
-
 import static io.quarkus.deployment.annotations.ExecutionTime.RUNTIME_INIT;
 import static io.quarkus.deployment.annotations.ExecutionTime.STATIC_INIT;
 
@@ -28,7 +25,6 @@ import com.datastax.oss.driver.internal.core.loadbalancing.DefaultLoadBalancingP
 import com.datastax.oss.driver.internal.core.metadata.MetadataManager;
 import com.datastax.oss.driver.internal.core.metadata.NoopNodeStateListener;
 import com.datastax.oss.driver.internal.core.metadata.schema.NoopSchemaChangeListener;
-import com.datastax.oss.driver.internal.core.os.Native;
 import com.datastax.oss.driver.internal.core.retry.DefaultRetryPolicy;
 import com.datastax.oss.driver.internal.core.session.throttling.PassThroughRequestThrottler;
 import com.datastax.oss.driver.internal.core.specex.NoSpeculativeExecutionPolicy;
@@ -56,6 +52,8 @@ import io.quarkus.gizmo.MethodCreator;
 import io.quarkus.gizmo.MethodDescriptor;
 import io.quarkus.gizmo.ResultHandle;
 import io.quarkus.smallrye.health.deployment.spi.HealthBuildItem;
+import java.util.Arrays;
+import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Default;
 import javax.enterprise.inject.Produces;
@@ -63,23 +61,20 @@ import javax.enterprise.inject.Produces;
 class CassandraClientProcessor {
   public static final String CASSANDRA_CLIENT = "cassandra-client";
 
-
   @BuildStep
   List<ReflectiveClassBuildItem> registerForReflection() {
     return Arrays.asList(
-            new ReflectiveClassBuildItem(true, true, ExponentialReconnectionPolicy.class.getName()),
-            new ReflectiveClassBuildItem(true, true, NoopSchemaChangeListener.class.getName()),
-            new ReflectiveClassBuildItem(true, true, PassThroughAddressTranslator.class.getName()),
-            new ReflectiveClassBuildItem(true, true, DefaultLoadBalancingPolicy.class.getName()),
-            new ReflectiveClassBuildItem(true, true, DefaultRetryPolicy.class.getName()),
-            new ReflectiveClassBuildItem(true, true, NoSpeculativeExecutionPolicy.class.getName()),
-            new ReflectiveClassBuildItem(true, true, NoopNodeStateListener.class.getName()),
-            new ReflectiveClassBuildItem(true, true, NoopRequestTracker.class.getName()),
-            new ReflectiveClassBuildItem(true, true, PassThroughRequestThrottler.class.getName()),
-            new ReflectiveClassBuildItem(true, true, AtomicTimestampGenerator.class.getName()));
+        new ReflectiveClassBuildItem(true, true, ExponentialReconnectionPolicy.class.getName()),
+        new ReflectiveClassBuildItem(true, true, NoopSchemaChangeListener.class.getName()),
+        new ReflectiveClassBuildItem(true, true, PassThroughAddressTranslator.class.getName()),
+        new ReflectiveClassBuildItem(true, true, DefaultLoadBalancingPolicy.class.getName()),
+        new ReflectiveClassBuildItem(true, true, DefaultRetryPolicy.class.getName()),
+        new ReflectiveClassBuildItem(true, true, NoSpeculativeExecutionPolicy.class.getName()),
+        new ReflectiveClassBuildItem(true, true, NoopNodeStateListener.class.getName()),
+        new ReflectiveClassBuildItem(true, true, NoopRequestTracker.class.getName()),
+        new ReflectiveClassBuildItem(true, true, PassThroughRequestThrottler.class.getName()),
+        new ReflectiveClassBuildItem(true, true, AtomicTimestampGenerator.class.getName()));
   }
-
-
 
   @SuppressWarnings("unchecked")
   @Record(STATIC_INIT)
