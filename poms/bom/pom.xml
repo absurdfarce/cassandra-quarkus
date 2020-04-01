@@ -82,21 +82,6 @@
         <scope>test</scope>
       </dependency>
       <dependency>
-        <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-smallrye-health-spi</artifactId>
-        <version>${quarkus.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-smallrye-metrics-deployment</artifactId>
-        <version>${quarkus.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-smallrye-metrics-spi</artifactId>
-        <version>${quarkus.version}</version>
-      </dependency>
-      <dependency>
         <groupId>org.awaitility</groupId>
         <artifactId>awaitility</artifactId>
         <version>4.0.2</version>
@@ -113,11 +98,6 @@
         <artifactId>quarkus-junit5-internal</artifactId>
         <version>${quarkus.version}</version>
         <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-arc-deployment</artifactId>
-        <version>${quarkus.version}</version>
       </dependency>
       <dependency>
         <groupId>org.mockito</groupId>
