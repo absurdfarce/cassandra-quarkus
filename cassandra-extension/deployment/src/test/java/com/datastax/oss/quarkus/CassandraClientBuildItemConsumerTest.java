@@ -47,10 +47,8 @@ public class CassandraClientBuildItemConsumerTest {
   }
 
   protected static Consumer<BuildChainBuilder> buildCustomizer() {
-    return new Consumer<BuildChainBuilder>() {
-      // This represents the extension.
-      @Override
-      public void accept(BuildChainBuilder builder) {
+    // This represents the extension.
+    return builder ->
         builder
             .addBuildStep(
                 context -> {
@@ -60,7 +58,5 @@ public class CassandraClientBuildItemConsumerTest {
             .consumes(CassandraClientBuildItem.class)
             .produces(FeatureBuildItem.class)
             .build();
-      }
-    };
   }
 }
