@@ -37,34 +37,6 @@
         <artifactId>cassandra-quarkus-client</artifactId>
         <version>${project.version}</version>
       </dependency>
-      <!-- Other third party dependencies here -->
-      <dependency>
-        <groupId>com.datastax.oss</groupId>
-        <artifactId>java-driver-core</artifactId>
-        <version>${datastax-java-driver.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-json</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>com.squareup</groupId>
-            <artifactId>javapoet</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.ow2.asm</groupId>
-            <artifactId>asm-util</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
       <dependency>
         <groupId>org.lz4</groupId>
         <artifactId>lz4-java</artifactId>
