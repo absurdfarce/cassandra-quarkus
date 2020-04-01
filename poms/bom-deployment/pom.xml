@@ -9,7 +9,7 @@
   </parent>
   <artifactId>cassandra-quarkus-bom-deployment</artifactId>
   <packaging>pom</packaging>
-  <name>Cassandra Quarkus :: Build Parent</name>
+  <name>Cassandra Quarkus :: BOM :: Deployment</name>
   <properties>
     <cassandra-quarkus.version>1.0.0-SNAPSHOT</cassandra-quarkus.version>
   </properties>

@@ -10,7 +10,7 @@
   <artifactId>cassandra-quarkus-parent</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>Quarkus - Cassandra Client</name>
+  <name>Cassandra Quarkus :: Parent</name>
   <description>Cassandra extensions for Quarkus</description>
   <url>https://quarkus.io/guides/cassandra</url>
   <inceptionYear>2020</inceptionYear>

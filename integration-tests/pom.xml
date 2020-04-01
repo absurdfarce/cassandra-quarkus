@@ -7,8 +7,8 @@
     <version>1.0.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
-  <artifactId>integraion-tests</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <artifactId>cassandra-quarkus-integration-tests</artifactId>
+  <name>Cassandra Quarkus :: Integration Tests</name>
   <dependencyManagement>
     <dependencies>
       <dependency>

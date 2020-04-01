@@ -8,7 +8,7 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>cassandra-quarkus-client-parent</artifactId>
-  <name>Cassandra Quarkus :: Client</name>
+  <name>Cassandra Quarkus :: Client :: Parent</name>
   <packaging>pom</packaging>
   <modules>
     <module>deployment</module>

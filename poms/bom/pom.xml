@@ -9,7 +9,7 @@
   </parent>
   <artifactId>cassandra-quarkus-bom</artifactId>
   <packaging>pom</packaging>
-  <name>Cassandra Quarkus :: BOM</name>
+  <name>Cassandra Quarkus :: BOM :: Runtime</name>
   <properties>
     <cassandra-quarkus.version>1.0.0-SNAPSHOT</cassandra-quarkus.version>
     <datastax-java-driver.version>4.5.1</datastax-java-driver.version>
