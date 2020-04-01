@@ -11,7 +11,6 @@
   <packaging>pom</packaging>
   <name>Cassandra Quarkus :: BOM :: Runtime</name>
   <properties>
-    <cassandra-quarkus.version>1.0.0-SNAPSHOT</cassandra-quarkus.version>
     <datastax-java-driver.version>4.5.1</datastax-java-driver.version>
   </properties>
   <dependencyManagement>
@@ -36,7 +35,7 @@
       <dependency>
         <groupId>com.datastax.oss.quarkus</groupId>
         <artifactId>cassandra-quarkus-client</artifactId>
-        <version>${cassandra-quarkus.version}</version>
+        <version>${project.version}</version>
       </dependency>
       <!-- Other third party dependencies here -->
       <dependency>

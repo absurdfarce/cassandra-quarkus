@@ -10,15 +10,12 @@
   <artifactId>cassandra-quarkus-bom-deployment</artifactId>
   <packaging>pom</packaging>
   <name>Cassandra Quarkus :: BOM :: Deployment</name>
-  <properties>
-    <cassandra-quarkus.version>1.0.0-SNAPSHOT</cassandra-quarkus.version>
-  </properties>
   <dependencyManagement>
     <dependencies>
       <dependency>
         <groupId>com.datastax.oss.quarkus</groupId>
         <artifactId>cassandra-quarkus-bom</artifactId>
-        <version>${cassandra-quarkus.version}</version>
+        <version>${project.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -34,7 +31,7 @@
       <dependency>
         <groupId>com.datastax.oss.quarkus</groupId>
         <artifactId>cassandra-quarkus-client-deployment</artifactId>
-        <version>${cassandra-quarkus.version}</version>
+        <version>${project.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
