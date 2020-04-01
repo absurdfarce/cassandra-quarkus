@@ -48,12 +48,13 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
-      <!-- Cassandra Quarkus -->
+      <!-- Cassandra Quarkus Extension (Runtime) -->
       <dependency>
         <groupId>com.datastax.oss.quarkus</groupId>
         <artifactId>cassandra-quarkus-client</artifactId>
         <version>${project.version}</version>
       </dependency>
+      <!-- Driver Optional dependencies -->
       <dependency>
         <groupId>org.lz4</groupId>
         <artifactId>lz4-java</artifactId>
