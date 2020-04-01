@@ -113,9 +113,6 @@
             <excludes>
               <exclude>.idea/**</exclude>
               <exclude>**/target/**</exclude>
-              <exclude>**/dependency-reduced-pom.xml</exclude>
-              <exclude>**/.flattened-pom.xml</exclude>
-              <exclude>docs/**</exclude>
             </excludes>
           </configuration>
         </plugin>
