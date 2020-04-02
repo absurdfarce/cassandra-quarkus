@@ -114,17 +114,17 @@
     </dependency>
   </dependencies>
   <build>
-    <resources>
-      <resource>
-        <directory>src/test/resources</directory>
-        <filtering>true</filtering>
-      </resource>
-    </resources>
     <plugins>
       <plugin>
-        <artifactId>maven-failsafe-plugin</artifactId>
+        <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <skip>true</skip>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>com.datastax.oss</groupId>
+              <artifactId>java-driver-mapper-processor</artifactId>
+              <version>4.5.0</version>
+            </path>
+          </annotationProcessorPaths>
         </configuration>
       </plugin>
       <plugin>
@@ -138,14 +138,25 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
   <profiles>
     <profile>
-      <id>native-image</id>
+      <id>vm</id>
       <activation>
+        <activeByDefault>true</activeByDefault>
         <property>
-          <name>native</name>
+          <name>!native</name>
         </property>
       </activation>
       <build>
@@ -160,16 +171,24 @@
                   <goal>verify</goal>
                 </goals>
                 <configuration>
-                  <systemProperties>
-                    <native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>
-                  </systemProperties>
+                  <failIfNoTests>true</failIfNoTests>
+                  <excludedGroups>native</excludedGroups>
                 </configuration>
               </execution>
             </executions>
-            <configuration>
-              <skip>false</skip>
-            </configuration>
           </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>native</id>
+      <activation>
+        <property>
+          <name>native</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
           <plugin>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-maven-plugin</artifactId>
@@ -189,20 +208,46 @@
             </executions>
           </plugin>
           <plugin>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-              <source>1.8</source>
-              <!-- (or higher) -->
-              <target>1.8</target>
-              <!-- (or higher) -->
-              <annotationProcessorPaths>
-                <path>
-                  <groupId>com.datastax.oss</groupId>
-                  <artifactId>java-driver-mapper-processor</artifactId>
-                  <version>4.5.0</version>
-                </path>
-              </annotationProcessorPaths>
-            </configuration>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>vm-tests</id>
+                <goals>
+                  <goal>integration-test</goal>
+                </goals>
+                <configuration>
+                  <excludedGroups>native</excludedGroups>
+                  <summaryFile>${project.build.directory}/failsafe-reports/failsafe-summary-vm.xml</summaryFile>
+                </configuration>
+              </execution>
+              <execution>
+                <id>native-tests</id>
+                <goals>
+                  <goal>integration-test</goal>
+                </goals>
+                <configuration>
+                  <groups>native</groups>
+                  <summaryFile>${project.build.directory}/failsafe-reports/failsafe-summary-native.xml</summaryFile>
+                  <systemProperties>
+                    <native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>
+                  </systemProperties>
+                </configuration>
+              </execution>
+              <execution>
+                <id>verify</id>
+                <goals>
+                  <goal>verify</goal>
+                </goals>
+                <configuration>
+                  <failIfNoTests>true</failIfNoTests>
+                  <summaryFiles>
+                    <summaryFile>${project.build.directory}/failsafe-reports/failsafe-summary-vm.xml</summaryFile>
+                    <summaryFile>${project.build.directory}/failsafe-reports/failsafe-summary-native.xml</summaryFile>
+                  </summaryFiles>
+                </configuration>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>

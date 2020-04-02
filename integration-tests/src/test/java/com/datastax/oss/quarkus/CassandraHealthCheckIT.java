@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 
 @QuarkusTest
 @QuarkusTestResource(CassandraTestResource.class)
-public class CassandraHealthCheckTest {
+public class CassandraHealthCheckIT {
   @Test
   public void healthCheckShouldReportStatusUp() {
     // when

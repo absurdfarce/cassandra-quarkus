@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test;
 
 @QuarkusTest
 @QuarkusTestResource(CassandraTestResource.class)
-public class ProductResourceTest {
+public class ProductResourceIT {
 
   @Test
   public void testSaveAndRetrieveProduct() {

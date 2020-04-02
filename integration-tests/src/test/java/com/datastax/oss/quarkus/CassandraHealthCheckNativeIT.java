@@ -16,6 +16,8 @@
 package com.datastax.oss.quarkus;
 
 import io.quarkus.test.junit.NativeImageTest;
+import org.junit.jupiter.api.Tag;
 
 @NativeImageTest
-public class ProductResourceNativeTest extends ProductResourceTest {}
+@Tag("native")
+public class CassandraHealthCheckNativeIT extends CassandraHealthCheckIT {}
