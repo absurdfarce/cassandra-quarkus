@@ -18,18 +18,27 @@ package com.datastax.oss.quarkus.deployment;
 import static io.quarkus.deployment.annotations.ExecutionTime.RUNTIME_INIT;
 import static io.quarkus.deployment.annotations.ExecutionTime.STATIC_INIT;
 
+import com.datastax.dse.driver.internal.core.tracker.MultiplexingRequestTracker;
 import com.datastax.oss.driver.api.core.CqlSession;
+import com.datastax.oss.driver.internal.core.addresstranslation.Ec2MultiRegionAddressTranslator;
 import com.datastax.oss.driver.internal.core.addresstranslation.PassThroughAddressTranslator;
+import com.datastax.oss.driver.internal.core.connection.ConstantReconnectionPolicy;
 import com.datastax.oss.driver.internal.core.connection.ExponentialReconnectionPolicy;
+import com.datastax.oss.driver.internal.core.loadbalancing.DcInferringLoadBalancingPolicy;
 import com.datastax.oss.driver.internal.core.loadbalancing.DefaultLoadBalancingPolicy;
 import com.datastax.oss.driver.internal.core.metadata.MetadataManager;
 import com.datastax.oss.driver.internal.core.metadata.NoopNodeStateListener;
 import com.datastax.oss.driver.internal.core.metadata.schema.NoopSchemaChangeListener;
 import com.datastax.oss.driver.internal.core.retry.DefaultRetryPolicy;
+import com.datastax.oss.driver.internal.core.session.throttling.ConcurrencyLimitingRequestThrottler;
 import com.datastax.oss.driver.internal.core.session.throttling.PassThroughRequestThrottler;
+import com.datastax.oss.driver.internal.core.session.throttling.RateLimitingRequestThrottler;
+import com.datastax.oss.driver.internal.core.specex.ConstantSpeculativeExecutionPolicy;
 import com.datastax.oss.driver.internal.core.specex.NoSpeculativeExecutionPolicy;
 import com.datastax.oss.driver.internal.core.time.AtomicTimestampGenerator;
+import com.datastax.oss.driver.internal.core.time.ThreadLocalTimestampGenerator;
 import com.datastax.oss.driver.internal.core.tracker.NoopRequestTracker;
+import com.datastax.oss.driver.internal.core.tracker.RequestLogger;
 import com.datastax.oss.quarkus.config.CassandraClientConfig;
 import com.datastax.oss.quarkus.runtime.AbstractCassandraClientProducer;
 import com.datastax.oss.quarkus.runtime.CassandraClientRecorder;
@@ -64,16 +73,37 @@ class CassandraClientProcessor {
   @BuildStep
   List<ReflectiveClassBuildItem> registerForReflection() {
     return Arrays.asList(
+        // reconnection policies
         new ReflectiveClassBuildItem(true, true, ExponentialReconnectionPolicy.class.getName()),
+        new ReflectiveClassBuildItem(true, true, ConstantReconnectionPolicy.class.getName()),
+        // schema change listener
         new ReflectiveClassBuildItem(true, true, NoopSchemaChangeListener.class.getName()),
+        // address translators
         new ReflectiveClassBuildItem(true, true, PassThroughAddressTranslator.class.getName()),
+        new ReflectiveClassBuildItem(true, true, Ec2MultiRegionAddressTranslator.class.getName()),
+        // load balancing policies
         new ReflectiveClassBuildItem(true, true, DefaultLoadBalancingPolicy.class.getName()),
+        new ReflectiveClassBuildItem(true, true, DcInferringLoadBalancingPolicy.class.getName()),
+        // retry policy
         new ReflectiveClassBuildItem(true, true, DefaultRetryPolicy.class.getName()),
+        // speculative execution policies
         new ReflectiveClassBuildItem(true, true, NoSpeculativeExecutionPolicy.class.getName()),
+        new ReflectiveClassBuildItem(
+            true, true, ConstantSpeculativeExecutionPolicy.class.getName()),
+        // state listener
         new ReflectiveClassBuildItem(true, true, NoopNodeStateListener.class.getName()),
+        // request trackers
         new ReflectiveClassBuildItem(true, true, NoopRequestTracker.class.getName()),
+        new ReflectiveClassBuildItem(true, true, MultiplexingRequestTracker.class.getName()),
+        new ReflectiveClassBuildItem(true, true, RequestLogger.class.getName()),
+        // request throttlers
         new ReflectiveClassBuildItem(true, true, PassThroughRequestThrottler.class.getName()),
-        new ReflectiveClassBuildItem(true, true, AtomicTimestampGenerator.class.getName()));
+        new ReflectiveClassBuildItem(
+            true, true, ConcurrencyLimitingRequestThrottler.class.getName()),
+        new ReflectiveClassBuildItem(true, true, RateLimitingRequestThrottler.class.getName()),
+        // timestamp generators
+        new ReflectiveClassBuildItem(true, true, AtomicTimestampGenerator.class.getName()),
+        new ReflectiveClassBuildItem(true, true, ThreadLocalTimestampGenerator.class.getName()));
   }
 
   @SuppressWarnings("unchecked")
