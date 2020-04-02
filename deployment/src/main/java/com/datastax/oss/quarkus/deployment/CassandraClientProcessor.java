@@ -19,7 +19,6 @@ import static io.quarkus.deployment.annotations.ExecutionTime.RUNTIME_INIT;
 import static io.quarkus.deployment.annotations.ExecutionTime.STATIC_INIT;
 
 import com.datastax.dse.driver.internal.core.tracker.MultiplexingRequestTracker;
-import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.internal.core.addresstranslation.Ec2MultiRegionAddressTranslator;
 import com.datastax.oss.driver.internal.core.addresstranslation.PassThroughAddressTranslator;
 import com.datastax.oss.driver.internal.core.connection.ConstantReconnectionPolicy;
@@ -41,11 +40,10 @@ import com.datastax.oss.driver.internal.core.tracker.NoopRequestTracker;
 import com.datastax.oss.driver.internal.core.tracker.RequestLogger;
 import com.datastax.oss.quarkus.config.CassandraClientConfig;
 import com.datastax.oss.quarkus.runtime.AbstractCassandraClientProducer;
+import com.datastax.oss.quarkus.runtime.CassandraClientProducer;
 import com.datastax.oss.quarkus.runtime.CassandraClientRecorder;
-import io.quarkus.arc.Unremovable;
 import io.quarkus.arc.deployment.BeanContainerListenerBuildItem;
 import io.quarkus.arc.deployment.GeneratedBeanBuildItem;
-import io.quarkus.arc.deployment.GeneratedBeanGizmoAdaptor;
 import io.quarkus.deployment.annotations.BuildProducer;
 import io.quarkus.deployment.annotations.BuildStep;
 import io.quarkus.deployment.annotations.Record;
@@ -55,17 +53,11 @@ import io.quarkus.deployment.builditem.nativeimage.NativeImageResourceBuildItem;
 import io.quarkus.deployment.builditem.nativeimage.ReflectiveClassBuildItem;
 import io.quarkus.deployment.builditem.nativeimage.RuntimeInitializedClassBuildItem;
 import io.quarkus.deployment.recording.RecorderContext;
-import io.quarkus.gizmo.ClassCreator;
-import io.quarkus.gizmo.ClassOutput;
-import io.quarkus.gizmo.MethodCreator;
-import io.quarkus.gizmo.MethodDescriptor;
-import io.quarkus.gizmo.ResultHandle;
 import io.quarkus.smallrye.health.deployment.spi.HealthBuildItem;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Default;
-import javax.enterprise.inject.Produces;
+import org.apache.commons.io.IOUtils;
 
 class CassandraClientProcessor {
   public static final String CASSANDRA_CLIENT = "cassandra-client";
@@ -116,64 +108,24 @@ class CassandraClientProcessor {
       BuildProducer<GeneratedBeanBuildItem> generatedBean) {
 
     feature.produce(new FeatureBuildItem(CASSANDRA_CLIENT));
+    String name = CassandraClientProducer.class.getName();
+    InputStream stream =
+        CassandraClientProcessor.class
+            .getClassLoader()
+            .getResourceAsStream(name.replace('.', '/') + ".class");
 
-    String cassandraClientProducerClassName = getCassandraClientProducerClassName();
-    createCassandraClientProducerBean(generatedBean, cassandraClientProducerClassName);
+    try {
+
+      generatedBean.produce(
+          new GeneratedBeanBuildItem(name, IOUtils.readFully(stream, stream.available())));
+    } catch (Exception e) {
+      e.printStackTrace();
+      System.exit(2);
+    }
 
     return new BeanContainerListenerBuildItem(
         recorder.addCassandraClient(
-            (Class<? extends AbstractCassandraClientProducer>)
-                recorderContext.classProxy(cassandraClientProducerClassName)));
-  }
-
-  private String getCassandraClientProducerClassName() {
-    return AbstractCassandraClientProducer.class.getPackage().getName()
-        + "."
-        + "CassandraClientProducer";
-  }
-
-  private void createCassandraClientProducerBean(
-      BuildProducer<GeneratedBeanBuildItem> generatedBean,
-      String cassandraClientProducerClassName) {
-
-    ClassOutput classOutput = new GeneratedBeanGizmoAdaptor(generatedBean);
-
-    try (ClassCreator classCreator =
-        ClassCreator.builder()
-            .classOutput(classOutput)
-            .className(cassandraClientProducerClassName)
-            .superClass(AbstractCassandraClientProducer.class)
-            .build()) {
-      classCreator.addAnnotation(ApplicationScoped.class);
-
-      try (MethodCreator defaultCassandraClient =
-          classCreator.getMethodCreator("createDefaultCassandraClient", CqlSession.class)) {
-        defaultCassandraClient.addAnnotation(ApplicationScoped.class);
-        defaultCassandraClient.addAnnotation(Produces.class);
-        defaultCassandraClient.addAnnotation(Default.class);
-
-        // make CqlSession as Unremovable bean
-        defaultCassandraClient.addAnnotation(Unremovable.class);
-
-        ResultHandle cassandraClientConfig =
-            defaultCassandraClient.invokeVirtualMethod(
-                MethodDescriptor.ofMethod(
-                    AbstractCassandraClientProducer.class,
-                    "getCassandraClientConfig",
-                    CassandraClientConfig.class),
-                defaultCassandraClient.getThis());
-
-        defaultCassandraClient.returnValue(
-            defaultCassandraClient.invokeVirtualMethod(
-                MethodDescriptor.ofMethod(
-                    AbstractCassandraClientProducer.class,
-                    "createCassandraClient",
-                    CqlSession.class,
-                    CassandraClientConfig.class),
-                defaultCassandraClient.getThis(),
-                cassandraClientConfig));
-      }
-    }
+            (Class<? extends AbstractCassandraClientProducer>) recorderContext.classProxy(name)));
   }
 
   @Record(RUNTIME_INIT)
