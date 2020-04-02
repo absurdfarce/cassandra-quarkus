@@ -180,7 +180,6 @@
                   <goal>verify</goal>
                 </goals>
                 <configuration>
-                  <failIfNoTests>true</failIfNoTests>
                   <excludedGroups>native</excludedGroups>
                 </configuration>
               </execution>
@@ -249,6 +248,7 @@
                   <goal>verify</goal>
                 </goals>
                 <configuration>
+                  <!-- required because failed native tests are not reported at all -->
                   <failIfNoTests>true</failIfNoTests>
                   <summaryFiles>
                     <summaryFile>${project.build.directory}/failsafe-reports/failsafe-summary-vm.xml</summaryFile>
