@@ -124,6 +124,11 @@
               <artifactId>java-driver-mapper-processor</artifactId>
               <version>4.5.0</version>
             </path>
+            <path>
+              <groupId>ch.qos.logback</groupId>
+              <artifactId>logback-classic</artifactId>
+              <version>1.2.3</version>
+            </path>
           </annotationProcessorPaths>
         </configuration>
       </plugin>
