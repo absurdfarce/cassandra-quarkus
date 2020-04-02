@@ -169,6 +169,14 @@ class CassandraClientProcessor {
         "cassandra");
   }
 
+  /**
+   * MetadataManager must be initialized at runtime because it uses Inet4Socket address that cannot
+   * be initialized at the deployment time because of: No instances of java.net.Inet4Address are
+   * allowed in the image heap as this class should be initialized at image runtime.
+   *
+   * @return RuntimeInitializedClassBuildItem of {@link MetadataManager} that initialization will be
+   *     deferred to runtime.
+   */
   @BuildStep
   RuntimeInitializedClassBuildItem runtimeMetadataManager() {
     return new RuntimeInitializedClassBuildItem(MetadataManager.class.getCanonicalName());
