@@ -20,7 +20,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.datastax.oss.quarkus</groupId>
-    <artifactId>cassandra-quarkus-client-parent</artifactId>
+    <artifactId>cassandra-quarkus-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>cassandra-quarkus-client</artifactId>

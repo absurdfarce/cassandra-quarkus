@@ -22,33 +22,47 @@
     <groupId>com.datastax.oss.quarkus</groupId>
     <artifactId>cassandra-quarkus-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <relativePath>../../pom.xml</relativePath>
   </parent>
-  <artifactId>cassandra-quarkus-bom-deployment</artifactId>
+  <artifactId>cassandra-quarkus-bom</artifactId>
   <packaging>pom</packaging>
-  <name>Cassandra Quarkus :: BOM :: Deployment</name>
+  <name>Cassandra Quarkus :: BOM :: Runtime</name>
+  <properties>
+    <datastax-java-driver.version>4.5.1</datastax-java-driver.version>
+  </properties>
   <dependencyManagement>
     <dependencies>
-      <dependency>
-        <groupId>com.datastax.oss.quarkus</groupId>
-        <artifactId>cassandra-quarkus-bom</artifactId>
-        <version>${project.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <!-- External BOMs -->
+      <!-- External BOM -->
       <dependency>
         <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-bom-deployment</artifactId>
+        <artifactId>quarkus-bom</artifactId>
         <version>${quarkus.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
-      <!-- Cassandra Quarkus Extensions (Deployment) -->
+      <!-- DataStax Java Driver BOM -->
+      <dependency>
+        <groupId>com.datastax.oss</groupId>
+        <artifactId>java-driver-bom</artifactId>
+        <version>${datastax-java-driver.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <!-- Cassandra Quarkus Extension (Runtime) -->
       <dependency>
         <groupId>com.datastax.oss.quarkus</groupId>
-        <artifactId>cassandra-quarkus-client-deployment</artifactId>
+        <artifactId>cassandra-quarkus-client</artifactId>
         <version>${project.version}</version>
+      </dependency>
+      <!-- Driver Optional dependencies -->
+      <dependency>
+        <groupId>org.lz4</groupId>
+        <artifactId>lz4-java</artifactId>
+        <version>1.6.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.xerial.snappy</groupId>
+        <artifactId>snappy-java</artifactId>
+        <version>1.1.7.3</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

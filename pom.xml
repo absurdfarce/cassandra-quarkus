@@ -39,9 +39,10 @@
     <graalvmHome>${env.GRAALVM_HOME}</graalvmHome>
   </properties>
   <modules>
-    <module>poms/bom</module>
-    <module>poms/bom-deployment</module>
-    <module>cassandra-extension</module>
+    <module>bom-runtime</module>
+    <module>bom-deployment</module>
+    <module>runtime</module>
+    <module>deployment</module>
     <module>integration-tests</module>
   </modules>
   <build>
